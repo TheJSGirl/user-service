@@ -3,8 +3,16 @@ const Joi = require('joi')
 module.exports = {
     signup: {
         body: {
-            username: Joi.string().min(4).max(255).required(),
-            password: Joi.string().min(4).max(255).required()
+            email: Joi.string().email().required(),
+            mobile: Joi.string().min(9).max(10),
+            username: Joi.string().min(4).max(10).required(),
+            password: Joi.string().min(4).max(10).required()
+        }
+    },
+    signin: {
+        body: {
+            username: Joi.string().min(4).required(),
+            password: Joi.string().min(4).required()
         }
     }
 }

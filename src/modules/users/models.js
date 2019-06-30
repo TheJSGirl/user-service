@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const {Schema} = mongoose;
+const { Schema } = mongoose;
 
 const userSchema = new Schema({
 
@@ -12,7 +12,7 @@ const userSchema = new Schema({
         type: String,
         trim: true
     },
-    userName: {
+    username: {
         type: String,
         trim: true
     },
