@@ -4,7 +4,6 @@ const {HashSettings, jwt} = require('../../config');
 const jwtToken = require('jsonwebtoken');
 const { response } = require('./../../utils');
 
-
 async function auth(req, res) {
     if(req.user){
         return res.status(200).send(response(req.user, '', true));
