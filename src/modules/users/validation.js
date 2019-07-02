@@ -9,6 +9,11 @@ module.exports = {
             password: Joi.string().min(4).max(10).required()
         }
     },
+    availability: {
+        body: {
+            username: Joi.string().min(4).max(10).required(),
+        }
+    },
     signin: {
         body: {
             username: Joi.string().min(4).required(),

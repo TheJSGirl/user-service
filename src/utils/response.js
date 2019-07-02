@@ -1,7 +1,8 @@
-function response(data, message) {
+function response(data, message, success = false) {
     return {
         data: data || [],
-        message: message || ''
+        message: message || '',
+        success
     }
 }
 
