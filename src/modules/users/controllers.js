@@ -3,10 +3,13 @@ const bcrypt = require('bcrypt');
 const {HashSettings, jwt} = require('../../config');
 const jwtToken = require('jsonwebtoken');
 
+async function listOne(req, res) {
+    res.status(200).send({ data: req.user, message: '' });
+}
 
 async function registerUser(req, res) {
 
-    const {name, password, email, mobile, username, image } = req.body
+    const { name, password, email, mobile, username, image } = req.body;
 
     const hashedPassword = await bcrypt.hashSync(password, HashSettings.SaltRounds);
     const data = {
@@ -16,7 +19,7 @@ async function registerUser(req, res) {
         mobile,
         username,
         image
-    }
+    };
 
     const user = new User(data);
     await user.save();
@@ -24,7 +27,8 @@ async function registerUser(req, res) {
 }
 
 async function loginUser(req, res) {
-    const {username, password} = req.body;
+    
+    const { username, password } = req.body;
     const userFromDb = await User.findOne({username});
 
     if(!userFromDb) {
@@ -51,5 +55,6 @@ async function loginUser(req, res) {
 
 module.exports = {
     registerUser,
-    loginUser
-}
+    loginUser,
+    listOne
+};

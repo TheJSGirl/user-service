@@ -1,23 +1,28 @@
 const jwt = require('jsonwebtoken');
-const User = require('../users/models');
-const config = require('../../config');
-const errors = require('njs/lib/errors');
+const User = require('./../modules/users/models');
+const config = require('./../config');
 const _ = require('lodash');
-const sessionKey = config.authentication.tokenKey || '';
-
 
 const checkAuth = async(req, res, next) =>{
-    const headerToken = req.header.authorization;
+    const headerToken = req.headers.authorization;
     const token = headerToken.split(' ')[1];
 
-    if (!token && !authToken) {
+    if (!token) {
         req.authenticated = false;
-        throw new errors.UnauthorizedAccess();
+        res.status(401).send({ message: 'Unauthorized'})
     }
-    const decoded = await jwt.verify(token, config.jwt.secret, config.jwt.expiresIn);
+    
+    let decoded = '';
+    
+    try {
+        decoded = await jwt.verify(token, config.jwt.jwt_sceret, config.jwt.jwt_exp)
+    } catch (e) {
+        req.authenticated = false;
+        return res.status(401).send({ message: e.message});
+    }
     if (!decoded) {
         req.authenticated = false;
-        throw new errors.UnauthorizedAccess();
+        res.status(401).send({ message: 'Unauthorized'})
     }
     const dbUser = await User.findOne({ _id: decoded.id });
     const permission = {
@@ -29,9 +34,11 @@ const checkAuth = async(req, res, next) =>{
     }
 
     req.authenticated = true;
-    req.user = decoded;
+    dbUser.password = null;
+    req.user = dbUser;
     req.permission = permission;
     await next();
 
 }
+
 module.exports = checkAuth;
