@@ -4,9 +4,18 @@ module.exports = {
     signup: {
         body: {
             email: Joi.string().email().required(),
+            name: Joi.string(),
             mobile: Joi.string().min(9).max(10),
             username: Joi.string().min(4).max(10).required(),
             password: Joi.string().min(4).max(10).required()
+        }
+    },
+    update: {
+        body: {
+            name: Joi.string(),
+            email: Joi.string().email(),
+            mobile: Joi.string().min(9).max(10),
+            username: Joi.string().min(4).max(10),
         }
     },
     availability: {

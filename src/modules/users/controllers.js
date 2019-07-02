@@ -12,7 +12,6 @@ async function auth(req, res) {
     res.status(401).send(response({}, 'Unauthorized request', false));
 }
 
-
 async function userAvailability(req, res) {
     const { username } = req.body;
     const hasUser = await User.findOne({ username });
@@ -20,12 +19,30 @@ async function userAvailability(req, res) {
     if(hasUser) {
         return res.status(400).json(response({}, 'Username Taken', false));
     }
-    
     res.status(200).send(response(req.user, 'Username available', true));
 }
 
 async function listOne(req, res) {
     res.status(200).send(response(req.user, '', true));
+}
+
+async function update(req, res) {
+    
+    let user;
+    const { name, email, mobile, username } = req.body;
+    const hasUser = await User.findOne({ username });
+    
+    if(!hasUser) {
+        user = username;
+    }
+    
+    const updatedUser = await User.findOneAndUpdate({ email: req.user.email }, { name, email, mobile, user },{ new:true });
+    
+    if(updatedUser){
+        updatedUser.password = null;
+        return res.status(200).send(response(updatedUser, 'User Updated Successfully', true));
+    }
+    res.status(400).send(response({}, 'User update failed', false));
 }
 
 async function registerUser(req, res) {
@@ -85,5 +102,6 @@ module.exports = {
     loginUser,
     listOne,
     userAvailability,
-    auth
+    auth,
+    update
 };
