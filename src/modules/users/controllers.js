@@ -5,6 +5,14 @@ const jwtToken = require('jsonwebtoken');
 const { response } = require('./../../utils');
 
 
+async function auth(req, res) {
+    if(req.user){
+        return res.status(200).send(response(req.user, '', true));
+    }
+    res.status(401).send(response({}, 'Unauthorized request', false));
+}
+
+
 async function userAvailability(req, res) {
     const { username } = req.body;
     const hasUser = await User.findOne({ username });
@@ -76,5 +84,6 @@ module.exports = {
     registerUser,
     loginUser,
     listOne,
-    userAvailability
+    userAvailability,
+    auth
 };

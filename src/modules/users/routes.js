@@ -8,5 +8,6 @@ route.post('/signUp', [validate(UserValidation.signup)], controller.registerUser
 route.post('/availability', [validate(UserValidation.availability)], controller.userAvailability);
 route.post('/signIn', [validate(UserValidation.signin)], controller.loginUser);
 route.get('/', checkAuth, controller.listOne);
+route.get('/auth', checkAuth, controller.auth);
 
 module.exports = route;
