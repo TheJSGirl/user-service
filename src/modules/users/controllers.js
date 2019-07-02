@@ -10,7 +10,11 @@ async function listOne(req, res) {
 async function registerUser(req, res) {
 
     const { name, password, email, mobile, username, image } = req.body;
-
+    const hasUser = await User.findOne({ email });
+    if(hasUser) {
+        return res.status(201).json({ data: {}, message: 'User already exists'});
+    }
+    
     const hashedPassword = await bcrypt.hashSync(password, HashSettings.SaltRounds);
     const data = {
         name,

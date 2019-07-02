@@ -6,15 +6,17 @@ const userSchema = new Schema({
 
     name: {
         type: String,
-        trime: true
+        trim: true
     },
     password: {
         type: String,
-        trim: true
+        required: true,
     },
     username: {
         type: String,
-        trim: true
+        trim: true,
+        required: true,
+        unique: true,
     },
     image: {
         type: String,
@@ -24,7 +26,9 @@ const userSchema = new Schema({
     },
     email: {
         type: String,
-        trim: true
+        trim: true,
+        unique: true,
+        required: true,
     },
 }, { strict: true, timestamps: true });
 
