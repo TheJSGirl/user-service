@@ -11,7 +11,7 @@ const logger = log({ console: isDev, file: isProd, label: App.NAME });
 
 module.exports = async(app) => {
     
-    app.use(cors());
+    app.use(cors({ exposedHeaders: 'x-auth'}));
     if(isProd) {
         app.use(helmet());
         app.use(compression());

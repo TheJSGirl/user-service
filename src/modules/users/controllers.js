@@ -25,7 +25,6 @@ async function registerUser(req, res) {
 
 async function loginUser(req, res) {
     const {username, password} = req.body;
-
     const userFromDb = await User.findOne({username});
 
     if(!userFromDb) {
