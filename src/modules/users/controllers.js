@@ -26,21 +26,30 @@ async function listOne(req, res) {
 }
 
 async function update(req, res) {
+    let user = {};
+    const authUser = req.user;
+    const { name, mobile, username, email } = req.body;
+    const hasUser = await User.findOne({$or: [ { username }, { email } ] });
     
-    let user;
-    const { name, email, mobile, username } = req.body;
-    const hasUser = await User.findOne({ username });
-    
-    if(!hasUser) {
-        user = username;
+    if(hasUser) {
+        return res.status(400).json(response({}, 'Username or email is already in use', false));
     }
     
-    const updatedUser = await User.findOneAndUpdate({ email: req.user.email }, { name, email, mobile, user },{ new:true });
+    if(username) {
+        user.username = username;
+    }
+    
+    if(email) {
+        user.email = email;
+    }
+
+    const updatedUser = await User.findOneAndUpdate({ _id: authUser.id }, { name, mobile, ...user },{ new: true });
     
     if(updatedUser){
         updatedUser.password = null;
         return res.status(200).send(response(updatedUser, 'User Updated Successfully', true));
     }
+    
     res.status(400).send(response({}, 'User update failed', false));
 }
 
