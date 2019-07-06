@@ -5,8 +5,9 @@ const jwtToken = require('jsonwebtoken');
 const { response } = require('./../../utils');
 
 async function auth(req, res) {
+    const { user, authenticated, permission } = req;
     if(req.user){
-        return res.status(200).send(response(req.user, '', true));
+        return res.status(200).send(response({ user, authenticated, permission }, '', true));
     }
     res.status(401).send(response({}, 'Unauthorized request', false));
 }
