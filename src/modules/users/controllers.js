@@ -88,10 +88,12 @@ async function loginUser(req, res) {
     }
     
     const passwordFromDb = userFromDb.password;
-    const isValid = await bcrypt.compare(password, passwordFromDb);
+    const isValid = await bcrypt.compare(password, passwordFromDb).catch(e => {
+      return res.status(400).json(response({}, e.message, false));
+    });
 
     if(!isValid) {
-        return res.status(400).json(response({}, 'Invalid Password'), false);
+        return res.status(400).json(response({}, 'Invalid Password', false));
     }
        const tokenData = {
            id: userFromDb._id,
