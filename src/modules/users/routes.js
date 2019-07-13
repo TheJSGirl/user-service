@@ -5,6 +5,7 @@ const validate = require('express-validation');
 const route = require('express').Router();
 
 route.post('/signUp', [validate(UserValidation.signup)], controller.registerUser);
+route.patch('/password', [checkAuth, validate(UserValidation.password)], controller.changePassword);
 route.post('/availability', [validate(UserValidation.availability)], controller.userAvailability);
 route.post('/signIn', [validate(UserValidation.signin)], controller.loginUser);
 
