@@ -28,7 +28,9 @@ async function listOne(req, res) {
 
 async function changePassword(req, res) {
   const { password } = req.body;
-  const hashedPassword = await bcrypt.hashSync(password, HashSettings.SaltRounds);
+  const hashedPassword = await bcrypt.hashSync(password, HashSettings.SaltRounds).catch(e => {
+    return res.status(400).json(response({}, e.message, false));
+  });
   const updatedUser = await User.findOneAndUpdate({ _id: req.user.id }, { password: hashedPassword }, { new: true });
   res.status(200).send(response(updatedUser, 'Updated the password successfully', true));
 }
