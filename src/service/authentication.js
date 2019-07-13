@@ -19,7 +19,7 @@ const checkAuth = async(req, res, next) =>{
         decoded = await jwt.verify(token, config.jwt.jwt_sceret, config.jwt.jwt_exp)
     } catch (e) {
         req.authenticated = false;
-        res.status(401).send(response({}, e.message, false))
+        return res.status(401).send(response({}, e.message, false))
     }
     if (!decoded) {
         req.authenticated = false;
