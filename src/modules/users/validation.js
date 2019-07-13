@@ -6,8 +6,8 @@ module.exports = {
             email: Joi.string().email().required(),
             name: Joi.string(),
             mobile: Joi.string().min(9).max(10),
-            username: Joi.string().min(4).max(10).required(),
-            password: Joi.string().min(4).max(10).required()
+            username: Joi.string().min(4).required(),
+            password: Joi.string().min(4).required()
         }
     },
     update: {
@@ -15,12 +15,12 @@ module.exports = {
             name: Joi.string(),
             email: Joi.string().email(),
             mobile: Joi.string().min(9).max(10),
-            username: Joi.string().min(4).max(10),
+            username: Joi.string().min(4),
         }
     },
     availability: {
         body: {
-            username: Joi.string().min(4).max(10).required(),
+            username: Joi.string().min(4).required(),
         }
     },
     signin: {
@@ -30,3 +30,4 @@ module.exports = {
         }
     }
 }
+
